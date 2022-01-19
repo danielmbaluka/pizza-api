@@ -44,6 +44,14 @@ steps:
     PathToPublish: '$(Build.ArtifactStagingDirectory)\Nuget'
     ArtifactName: Nuget
 
+- task: NugetCommand@2
+  displayName: 'Push Build Artifact to Nuget'
+  inputs:
+    command: push
+    packagesToPublish: '$(Build.ArtifactStagingDirectory)\Nuget\*.nupkg'
+    nugetFeedType: external
+    publishFeedCredentials: 'my-nuget-connection'
+
 - task: GithubRelease@1
   displayName: 'Create Github Release (v$(Build.BuildNumber)-$(Build.BuildId))'
   inputs:
