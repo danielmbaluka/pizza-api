@@ -14,11 +14,11 @@ variables:
 
 steps:
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'filePath'
-    filePath: $(System.DefaultWorkingDirectory)\scripts\CheckVersion.ps1
-  displayName: 'Check if version was incremented'
+# - task: PowerShell@2
+#   inputs:
+#     targetType: 'filePath'
+#     filePath: $(System.DefaultWorkingDirectory)\scripts\CheckVersion.ps1
+#   displayName: 'Check if version was incremented'
 
 - task: UseDotNet@2
   displayName: 'Use .NET 6'
