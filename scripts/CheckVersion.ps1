@@ -2,7 +2,7 @@ $project = ".\PizzaApi.csproj"
 
 [xml]$xmlDoc = Get-Content $project
 
-$projectVersionString = $xmlDoc.Project.PropertyGroup.AppVersion
+$projectVersionString = $xmlDoc.Project.PropertyGroup.Version
 $projectVersionNumber = $projectVersionString -replace "\."
 
 # Get the current version of the latest public NuGet package
