@@ -7,25 +7,18 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'windows-latest'
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
 - task: PowerShell@2
   inputs:
     targetType: 'filePath'
-    filePath: $(System.DefaultWorkingDirectory)/scripts/CheckVersion.ps1
+    filePath: $(System.DefaultWorkingDirectory)\scripts\CheckVersion.ps1
   displayName: 'Check if version was incremented'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
 
 - task: UseDotNet@2
   displayName: 'Use .NET 6'
@@ -36,14 +29,14 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: "Build PizzaApi project"
   inputs:
-    projects: '$(Build.SourcesDirectory)/PizzaApi.csproj'
+    projects: '$(Build.SourcesDirectory)\PizzaApi.csproj'
     arguments: '--configuration $(BuildConfiguration) --no-incremental'
 
 - task: NugetCommand@2
   displayName: 'Pack the project for nuget release'
   inputs:
     command: custom
-    arguments: 'pack $(Build.SourcesDirectory)/PizzaApi.csproj -NonInteractive -OutputDirectory $(Build.ArtifactStagingDirectory)\Nuget -Properties Configuration=$(BuildConfiguration) -Verbosity Detailed -Symbols -SymbolPackageFormat snupkg'
+    arguments: 'pack $(Build.SourcesDirectory)\PizzaApi.csproj -NonInteractive -OutputDirectory $(Build.ArtifactStagingDirectory)\Nuget -Properties Configuration=$(BuildConfiguration) -Verbosity Detailed -Symbols -SymbolPackageFormat snupkg'
 
 - task: GithubRelease@1
   displayName: 'Create Github Release (v$(Build.BuildNumber)-$(Build.BuildId))'
