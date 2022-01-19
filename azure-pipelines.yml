@@ -38,6 +38,12 @@ steps:
     command: custom
     arguments: 'pack $(Build.SourcesDirectory)\PizzaApi.csproj -NonInteractive -OutputDirectory $(Build.ArtifactStagingDirectory)\Nuget -Properties Configuration=$(BuildConfiguration) -Verbosity Detailed -Symbols -SymbolPackageFormat snupkg'
 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact - Nuget Package'
+  inputs:
+    PathToPublish: '$(Build.ArtifactStagingDirectory)\Nuget'
+    ArtifactName: Nuget
+
 - task: GithubRelease@1
   displayName: 'Create Github Release (v$(Build.BuildNumber)-$(Build.BuildId))'
   inputs:
