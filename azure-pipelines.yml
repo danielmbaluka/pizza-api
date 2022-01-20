@@ -11,14 +11,17 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  projectVersion: '1.0.4'
 
 steps:
 
 - task: PowerShell@2
+  displayName: 'Check if version was incremented'
   inputs:
     targetType: 'filePath'
     filePath: $(System.DefaultWorkingDirectory)\scripts\CheckVersion.ps1
-  displayName: 'Check if version was incremented'
+    arguments: '-projectVersion "$(projectVersion)"'
+
 
 - task: UseDotNet@2
   displayName: 'Use .NET 6'
