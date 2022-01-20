@@ -1,0 +1,21 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  projectVersion: '1.0.4'
+
+steps:
+
+- task: UseDotNet@2
+  displayName: 'Use .NET 6'
+  inputs:
+    version: 6.x
