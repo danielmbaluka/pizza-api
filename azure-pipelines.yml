@@ -3,8 +3,14 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+# Trigger is on github tags
 trigger:
-- main
+  tags:
+    include:
+      - '*'
+
+# No Pull request (PR) triggers for release
+pr: none
 
 pool:
   vmImage: 'windows-latest'
@@ -59,6 +65,6 @@ steps:
   displayName: 'Create Github Release (v$(Build.BuildNumber)-$(Build.BuildId))'
   inputs:
     githubConnection: 'danielmbaluka'
-    title: 'PizzaAPI - v$(Build.BuildNumber)'
+    title: 'v$(projectVersion)'
     tagSource: userSpecifiedTag
-    tag: 'v$(Build.BuildNumber)'
+    tag: 'v$(projectVersion)'
