@@ -14,18 +14,28 @@ Param(
 	[string]$projectVersion
 )
 
-$projectVersionNumber = $projectVersion -replace "\."
+$packageName = "pizzaapi"
 
-# Get the current version of the latest public NuGet package
-$url = "https://api.nuget.org/v3/registration5-semver1/pizzaapi/index.json"
+# Cast the project version string to System.Version
+[version]$currentProjectVersion = $projectVersion
+
+# API is case-sensitive
+$packageName = $packageName.ToLower()
+$url = "https://api.nuget.org/v3/registration5-semver1/$packageName/index.json"
+
+# Call the NuGet API for the package and get the current published version.
 $nugetIndex = Invoke-RestMethod -Uri $url -Method Get
-$currentPublishedVersionString = $nugetIndex.items[0].upper
-$currentPublishedVersionNumber = $currentPublishedVersionString -replace "\."
+$publishedVersionString = $nugetIndex.items[0].upper
 
-if ($projectVersionNumber -le  $currentPublishedVersionNumber) {
-	Write-Error "The version number has not been incremented. Aborting build."
-	Exit 1
+# Cast the published version string to System.Version
+[version]$currentPublishedVersion = $publishedVersionString
+
+# Validate that the version number has been updated.
+if ($currentProjectVersion -le $currentPublishedVersion) {
+    Write-Error "The project version in versioning.props file ($projectVersion) `
+    has not been bumped up. The current published version is $publishedVersionString. `
+    Please increment the current project version."
 }
 else {
-	Write-Host "Validated that the version has been updated from $currentPublishedVersionNumber to $projectVersionNumber" -ForegroundColor Green
+    Write-Host "Validated that the version has been updated from $publishedVersionString to $currentProjectVersion" -ForegroundColor Green
 }
